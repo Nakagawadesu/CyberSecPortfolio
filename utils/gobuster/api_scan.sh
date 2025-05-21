@@ -1,14 +1,11 @@
 #!/bin/bash
 # Discovers JSON API endpoints  
-IP=$1
-DOMAIN=$2
-OUT_DIR="gobuster/$IP/04_api_endpoints"
+#!/bin/bash
+source gobuster_wrapper.sh
 
-mkdir -p $OUT_DIR
+echo "[*] Finding API endpoints on $DOMAIN..."
 gobuster dir -u "http://$DOMAIN" \
   -w /usr/share/seclists/Discovery/Web/Common-Api-Endpoints.txt \
   -x json \
   -k \
-  --wildcard \
-  -t 15 \
-  -o "$OUT_DIR/results.txt"
+  -o "$OUT_DIR/04_api_scan.txt"

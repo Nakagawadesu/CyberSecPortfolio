@@ -8,7 +8,7 @@ from datetime import datetime
 def create_output_dir(target):
     """Create output directory in /nmap/<target>_<timestamp>"""
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    dir_name = f"nmap/{target}_{timestamp}"
+    dir_name = f"results/{target}_{timestamp}"
     os.makedirs(dir_name, exist_ok=True)
     return dir_name
 

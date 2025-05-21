@@ -1,13 +1,11 @@
 #!/bin/bash
 # PHP-focused scan with version fingerprinting  
-IP=$1
-DOMAIN=$2
-OUT_DIR="gobuster/$IP/02_files_php"
+#!/bin/bash
+source gobuster_wrapper.sh
 
-mkdir -p $OUT_DIR
+echo "[*] Hunting PHP files on $DOMAIN..."
 gobuster dir -u "http://$DOMAIN" \
   -w /usr/share/seclists/Discovery/Web-Content/PHP.fuzz.txt \
   -x php,phtml,phar \
-  --exclude-length 0 \
-  -t 30 \
-  -o "$OUT_DIR/results.txt"
+  -t 25 \
+  -o "$OUT_DIR/02_php_scan.txt"
