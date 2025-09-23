@@ -1,0 +1,39 @@
+ipconfig
+powershell New-NetIPAddress -InterfaceAlias "Ethernet0" -IPAddress 172.18.6.3 -PrefixLength 24
+ipconfig.exe
+powershell New-NetIPAddress -InterfaceAlias "Ethernet0" -IPAddress 10.129.233.246 -PrefixLength 24
+ipconfig
+ncpa.cpl
+ipconfig
+ping 1.1.1.1
+cd C:\Users\
+ls
+net user Werni Quantum1! /add
+ls
+net localgroup administrator Werni /add
+net localgroup Administrators Werni /add
+clear
+wmic computersystem where name="%COMPUTERNAME%" call rename name="Heisen-9-WS-6"
+ls
+cd ..
+ls
+cd .\Users\
+ls
+net users
+Rename-Conputer -NewName "Heisen-9-WS-6" -Force
+Rename-Computer -NewName "Heisen-9-WS-6" -Force
+net users
+ls
+net user felamos /delete
+cd ..
+ls
+net users
+cat .\Werni\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
+Enable-NetFirewallRule -DisplayGroup "Windows Management Instrumentation (WMI)"
+Enable-NetFirewallRule -DisplayGroup "Remote Event Log Management"
+Enable-NetFirewallRule -DisplayGroup "Remote Service Management"
+auditpol /set /subcategory:"Process Creation" /success:enable
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit" /v ProcessCreationIncludeCmdLine_Enabled /t REG_DWORD /d 1 /f
+Set-MpPreference -DisableRealtimeMonitoring $true
+Get-MpComputerStatus | Select-Object AMRunningMode, RealTimeProtectionEnabled
