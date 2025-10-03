@@ -54,7 +54,7 @@ Here you will find Python scripts created to speed up the initial triage and ana
 * **`list_directories.py`**: A simple utility to generate a clean, tree-like view of a forensic image's directory structure.
 * **`auto_triage_ZTools.sh`**: A powerful script that scans a Windows triage image, identifies key artifacts (Event Logs, Registry Hives, $MFT), and automatically runs the appropriate Zimmerman's EZ Tool to process them into human-readable CSVs.
 * **`log_filter.py`**:
-This script is designed to quickly filter and search large CSV log files. It's particularly useful for event logs parsed by tools like Eric Zimmerman's EvtxECmd, allowing you to narrow down thousands of entries by specific keywords and timestamps.
+This script is designed to quickly filter and search large CSV log files. It's particularly useful for event logs parsed by tools like Eric Zimmerman's EvtxECmd, allowing you to narrow down thousands of entries by specific keywords and timestamps. This updated version now saves the filtered results to a new CSV file, making it easier to share or analyze the relevant data separately. The output filename is automatically generated to include the original filename and the keywords used for filtering.
 
 
 ---
