@@ -1,6 +1,7 @@
 # Cybersecurity Portfolio & Automation Lab
 
 Welcome to my cybersecurity portfolio! This repository serves as a collection of my work, methodologies, and custom tools developed during my journey through various cybersecurity challenges. I have a passion for digital forensics and offensive security, and I especially enjoy practicing my skills on platforms like Hack The Box.
+I like to document it so i can use it for consulting because I sometimes forget small details that possibly a chlalnge i made in the past might help me with
 
 This space is divided into three main areas: detailed CTF write-ups, reconnaissance scripts, and forensic automation tools.
 
@@ -9,21 +10,16 @@ This space is divided into three main areas: detailed CTF write-ups, reconnaissa
 ## 📂 Directory Structure
 
 Here's an overview of how the repository is organized:
-
+```bash
 /
-├── 📁 Write_ups/
-│   ├── 📁 [Platform_ChallengeName_Date]/
-│   └── ...
-├── 📁 Forensic_Automations/
-│   ├── 📄 list_directories.py
-│   ├── 📄 auto_triage_ZTools.py
-│   └── ...
-└── 📁 Ressoinance_Automations/
-├── 📁 nmap/
-├── 📁 gobuster/
-└── ...
-
-
+├── Write_ups/
+│   └── [Platform_ChallengeName_Date]/  #CTFS that i participate...
+│   └── [Category(Sherlokc, POWN]/ #has teh name of the category of challange sehrlokcs are blue team and so on...
+│                           
+└── Ressoinance_Automations/
+│   └── Forensic_Automations/  #Forensic and investigaition related automations
+│   ├── Ressoinance_Automations/ #Pentest Related automations
+```
 ---
 
 ## 📝 Write-ups
