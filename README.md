@@ -52,7 +52,10 @@ This section contains custom scripts I've written to automate and streamline the
 Here you will find Python scripts created to speed up the initial triage and analysis of forensic artifacts. Dealing with binary files and large logs during a time-sensitive challenge can be difficult, so these tools automate the repetitive tasks of listing evidence, parsing binary formats, and filtering data.
 
 * **`list_directories.py`**: A simple utility to generate a clean, tree-like view of a forensic image's directory structure.
-* **`auto_triage_ZTools.py`**: A powerful script that scans a Windows triage image, identifies key artifacts (Event Logs, Registry Hives, $MFT), and automatically runs the appropriate Zimmerman's EZ Tool to process them into human-readable CSVs.
+* **`auto_triage_ZTools.sh`**: A powerful script that scans a Windows triage image, identifies key artifacts (Event Logs, Registry Hives, $MFT), and automatically runs the appropriate Zimmerman's EZ Tool to process them into human-readable CSVs.
+* **`log_filter.py`**:
+This script is designed to quickly filter and search large CSV log files. It's particularly useful for event logs parsed by tools like Eric Zimmerman's EvtxECmd, allowing you to narrow down thousands of entries by specific keywords and timestamps.
+
 
 ---
 
