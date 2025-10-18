@@ -33,13 +33,15 @@ To access the site, I added the following entry to my /etc/hosts file:
 echo "10.10.11.86 soulmate.htb" | sudo tee -a /etc/hosts
 ```
 #### 2. VHost Discovery & Enumeration
-With access to the main site, I proceeded to enumerate for other potential virtual hosts on the same server using gobuster.
+With access to the main site, I proceeded to enumerate for other potential virtual hosts on the same server using gobuster, and using waht web to know more about teh target.
+<img width="922" height="135" alt="SoulMate_WahtWeb on FTP" src="https://github.com/user-attachments/assets/ebf8b905-cb8c-480a-ba21-63ed905caac0" />
 
 ```Bash
 
 gobuster vhost -u [http://soulmate.htb/](http://soulmate.htb/) -w /usr/share/wordlists/dnsmap.txt --append-domain
 ```
 This scan uncovered a new subdomain: Found: ftp.soulmate.htb (Status: 302) [--> /WebInterface/login.html]
+<img width="870" height="414" alt="SoulçMAte SUbdomainFTP found" src="https://github.com/user-attachments/assets/4c7f6e89-401f-4f76-a269-b3ee26727599" />
 
 I updated my /etc/hosts file to include this new host:
 
@@ -80,10 +82,12 @@ python3 cve-2025-31161.py \
 --password Password123
 ```
 After the script confirmed user creation, I logged into the CrushFTP panel at http://ftp.soulmate.htb/ with nukitaro:Password123, gaining full administrative control and establishing my initial foothold.
+<img width="765" height="296" alt="SoulMate_ResetPasswed" src="https://github.com/user-attachments/assets/caca0778-1c91-4b8c-aa5b-8e5788b3407b" />
 
 
 #### 4. User Flag
 With administrative access to the CrushFTP User Manager, I was able to view and modify existing users. I changed the password for the user ben and then used the su command from my reverse shell, in the scriopt *nomralpage.php*, just uploaded it and accessed it and set ncat to listen to port 4444.
+<img width="1206" height="591" alt="upload reverseshell" src="https://github.com/user-attachments/assets/f2b7ed5a-925f-47a4-a2d1-5ac9c5594da0" />
 
 #### 5. Privilege Escalation to Root
 After gaining a shell as www-data and switching to the ben user, the final step was to find a path to root. Running linpeas.sh revealed a custom, high-privilege service.
@@ -91,9 +95,12 @@ After gaining a shell as www-data and switching to the ben user, the final step 
 The Vulnerability: Misconfigured Erlang Service
 The linpeas output showed a process running as root that was started by an Erlang script: /usr/local/lib/erlang_login/start.escript
 
-Reading this script revealed several critical details:
+Reading this script revealed several critical details, PASSWORD and USER!
+<img width="602" height="300" alt="FOund PASSwd CRonJob" src="https://github.com/user-attachments/assets/71d4afd4-43c0-4eef-8b29-ba78171a2037" />
+Used to login as super user *ben*
+<img width="939" height="132" alt="SU after Passwd" src="https://github.com/user-attachments/assets/b3c3ad4b-235c-4de8-a461-112c107de673" />
 
-It was running a custom SSH server on port 2222.
+ALso after runnoing *linpeas* found a procces  running a custom SSH server on port 2222.
 
 The service was only accessible from localhost (127.0.0.1).
 
@@ -132,6 +139,5 @@ Eshell V15.2.5 (press Ctrl+G to abort, type help(). for help)
 ```
 
 This command executed cat /root/root.txt as the root user, revealing the final flag.
+# 🏴
 
-### Conclusion
-The SoulMate machine was a well-rounded challenge that tested multiple skills. The path to root required careful web enumeration, identification of a critical CVE, and a deep dive into system processes to find a misconfigured service that provided the final privilege escalation vector.
