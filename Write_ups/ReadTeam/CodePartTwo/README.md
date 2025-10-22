@@ -5,7 +5,6 @@ The initial Nmap scan showed Gunicorn 20.0.4 hosting a web application on port 8
 Initial attempts to exploit the /run\_code endpoint using standard Node.js sandbox escapes failed.
 A quick directory enumeration revealed an internal /download endpoint serving the source code as app.zip, which contained the app.py file.Analysis of app.p revealed  critical vulnerabilities:
 - Code Execution Sandbox: JavaScript was executed using the Python library js2py via js2py.eval\_js(code), making it a js2py sandbox escape target.
-<img width="858" height="260" alt="CdePartTwo_UsersDBpasswd" src="https://github.com/user-attachments/assets/045cb700-4434-43eb-8d6a-626ac397fbd3" />
 
 ### 2. User Foothold:
 js2py RCE and Reverse ShellInstead of exploiting the Flask secret key, the path chosen was the more direct js2p sandbox escape, which gives full shell access immediately.
