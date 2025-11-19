@@ -91,6 +91,7 @@ We also need a valid dummy XML file (xml.xml) to pass the initial check:
 ```
 Execution
 Start a Listener: We use rlwrap with netcat to catch the shell and improve stability.
+<img width="512" height="103" alt="Conversor REverse_shell" src="https://github.com/user-attachments/assets/b2778975-1b7f-451d-b230-febf840bc060" />
 
 ```Bash
 
@@ -114,6 +115,7 @@ Bash
 
 sqlite3 instance/users.db "SELECT * FROM users;"
 Output:
+<img width="408" height="215" alt="conversor_hasheds" src="https://github.com/user-attachments/assets/a483eb16-80fe-42db-9e4a-519c6d6b8080" />
 
 ```Bash
 
@@ -129,11 +131,13 @@ Crack Result: Keepmesafeandwarm
 
 Obtaining User Flag
 With the password sysadmin, we can switch users to fismathack:
+<img width="754" height="149" alt="conversor FismatHAckPermisiion" src="https://github.com/user-attachments/assets/e78f24ad-660c-4b3d-b4d8-af920dc0c81e" />
 
-Bash
+```Bash
 
 su fismathack
 #### Password: Keepmesafeandwarm
+```
 We can now read the user flag:
 
 ```Bash
